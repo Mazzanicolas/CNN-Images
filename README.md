@@ -3,6 +3,7 @@
 
 ## Dependencies
 
+### Python Libraries
 You can use `pip install ` here.
 
 | Library        | Version           |
@@ -13,6 +14,13 @@ You can use `pip install ` here.
 | Matplotlib| 2.2.2 | 
 | Theano | 1.0.2 | 
 | Pillow | 5.1.0 | 
+
+### Anaconda (Optional)
+
+You might want to install [Anaconda](https://www.anaconda.com/download/).
+Usually g++ is not available in theano. 
+If you get<aside class="warning">WARNING (theano.configdefaults): g++ not available </aside>
+for better performance you can use `conda install m2w64-toolchain`
 
 ## Configuration
 `input_path` folder for input images
