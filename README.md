@@ -19,7 +19,8 @@ You can use `pip install ` here.
 
 You might want to install [Anaconda](https://www.anaconda.com/download/).
 Usually g++ is not available in theano. 
-If you get<aside class="warning">WARNING (theano.configdefaults): g++ not available </aside>
+If you get
+`WARNING (theano.configdefaults): g++ not available`
 for better performance you can use `conda install m2w64-toolchain`
 
 ## Configuration
