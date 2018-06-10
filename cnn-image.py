@@ -103,7 +103,7 @@ labels_amount = [300,# 300 samples of 0 class
                  300]# 300 samples of - class
 
 batchs_size = 10
-number_of_classes = 3
+number_of_classes = 12
 number_of_epoch   = 20
 
 image_depth       = 1
@@ -112,7 +112,7 @@ number_if_pool    = 2
 number_of_convolution = 3
 
 activation_function = "relu"
-output_nodes = 3
+output_nodes = 12
 
 #Data set up
 print('Preparing Data ...')
@@ -143,14 +143,26 @@ def create_model():
     model.add(Dense(128, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(output_nodes, activation='softmax'))
+    model.save('trained_model.h5')
+    return model
 
-def compile_model():
+def compile_model(model):
     print('Compiling Model ...')
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
+    return model
 
-def train():
+def train(model):
     print('Training Model ...')
     model.fit(X_train, Y_train, 
-              batch_size=batchs_size, nb_epoch=number_of_epoch, verbose=1, validation_data=(X_test, Y_test))
+              batch_size=batchs_size, epochs=number_of_epoch, verbose=1, validation_data=(X_test, Y_test))
+    return model
+
+def start():
+    model = create_model()
+    compiled_model = compile_model(model)
+    trained_model  = train(compiled_model) 
+    trained_model.save('trained_model.h5')
+
+start()
