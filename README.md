@@ -16,15 +16,25 @@ You can use `pip install ` here.
 
 ## Configuration
 `input_path` folder for input images
-`output_path` folder in whitch the converted images are saved 
+
+`output_path` folder in whitch the converted images are saved
+
 `image_height` output image height
+
 `image_width` output image width 
+
 `labels_amount` array with the amount of samples for image
+
 `batchs_size` amount of samples per iteration
+
 `number_of_classes` amount of classes in the dataset
+
 `number_of_epoch`   amount of iterations in the dataset
+
 `image_depth`  dimension for the depth of the input image
+
 `activation_function` [activation function](https://keras.io/activations/)
+
 `output_nodes` output corresponding to the amount of classes
 
 
@@ -59,7 +69,10 @@ Keras has __tensorflow__ as default, we need to change it to __theano__. You can
 	    "image_data_format": "channels_last"
 	 }
 ## References
-[Anuj shah](https://www.youtube.com/watch?v=2pQOXjpO_u0)
-[Elite Data Science](https://elitedatascience.com/keras-tutorial-deep-learning-in-python)
+[Anuj shah](https://www.youtube.com/watch?v=2pQOXjpO_u0
+
+[Elite Data Science](https://elitedatascience.com/keras-tutorial-deep-learning-in-python
+
 [Keras](keras.io/)
+
 [Scikit Learn](http://scikit-learn.org)
