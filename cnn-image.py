@@ -15,6 +15,61 @@ from PIL import Image
 from numpy import *
 
 
+#Config
+input_path  = './input_data'
+output_path = './output_data'
+
+image_height = 100
+image_width  = 100
+labels_amount = [1,2,1]
+
+batch_size = 10
+number_of_classes = 3
+number_of_epoch   = 20
+
+image_depth       = 1
+number_of_filters = 32
+number_if_pool    = 2
+number_of_convolution = 3
+
+activation_function = 'relu' #keras.io/activations/
+output_nodes = 3
+
+#Data set up
+data, labels = prepareData(input_path, output_path, image_height, image_width, labels_amount)
+
+X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=4)
+
+X_train, X_test = declareDimensionDepth(X_train, X_test)
+X_train, X_test = convertDataType(X_train, X_test)
+X_train, X_test = normalizeValues(X_train,X_test,255)
+
+Y_train = np_utils.to_categorical(y_train, len(labels_amount))
+Y_test  = np_utils.to_categorical(y_test, len(labels_amount))
+
+#Model
+model  = Sequential()
+model.add(Convolution2D(number_of_filters, number_of_convolution,
+                        number_of_convolution, activation=activation_function,
+                        input_shape=(image_depth,image_height,image_width)))
+
+model.add(Convolution2D(number_of_filters, number_of_convolution, number_of_convolution, activation='relu'))
+model.add(MaxPooling2D(pool_size=(2,2)))
+model.add(Dropout(0.25))
+
+model.add(Flatten())
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(output_nodes, activation='softmax'))
+
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+model.fit(X_train, Y_train, 
+          batch_size=batch_size, nb_epoch=number_of_epoch, verbose=1)
+
+#Methods
 def prepareData(input_path, output_path, output_image_height, output_image_width,
                    labels_ammount_array):
     input_images = getImages(input_path)
@@ -76,37 +131,3 @@ def normalizeValues(X_train, X_test, value):
     X_train /= value
     X_test /= value
     return X_train, X_test
-    
-
-#Config
-input_path  = './input_data'
-output_path = './output_data'
-
-image_height = 100
-image_width  = 100
-labels_amount = [1,2,1]
-
-batch_size = 50
-number_of_classes = 3
-number_of_epoch   = 20
-
-image_depth       = 1
-number_of_filters = 32 #?
-number_if_pool    = 2
-number_of_convolution = 3
-
-#Data set up
-data, labels = prepareData(input_path, output_path, image_height, image_width, labels_amount)
-
-X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=4)
-
-X_train, X_test = declareDimensionDepth(X_train, X_test)
-X_train, X_test = convertDataType(X_train, X_test)
-X_train, X_test = normalizeValues(X_train,X_test,255)
-
-Y_train = np_utils.to_categorical(y_train, len(labels_amount))
-Y_test  = np_utils.to_categorical(y_test, len(labels_amount))
-
-#Model	
-model  = Sequential()
-
