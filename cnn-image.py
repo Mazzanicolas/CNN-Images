@@ -87,9 +87,20 @@ def normalizeValues(X_train, X_test, value):
 input_path  = './input_data'
 output_path = './output_data'
 
-image_height = 100
-image_width  = 100
-labels_amount = [1,2,1]
+image_height = 28
+image_width  = 28
+labels_amount = [300,# 300 samples of 0 class
+                 300,# 300 samples of 1 class
+                 300,# 300 samples of 2 class
+                 300,# 300 samples of 3 class
+                 300,# 300 samples of 4 class
+                 300,# 300 samples of 5 class
+                 300,# 300 samples of 6 class
+                 300,# 300 samples of 7 class
+                 300,# 300 samples of 8 class
+                 300,# 300 samples of 9 class
+                 300,# 300 samples of + class
+                 300]# 300 samples of - class
 
 batchs_size = 10
 number_of_classes = 3
@@ -100,7 +111,7 @@ number_of_filters = 32
 number_if_pool    = 2
 number_of_convolution = 3
 
-activation_function = "relu" #keras.io/activations/
+activation_function = "relu"
 output_nodes = 3
 
 #Data set up
@@ -117,24 +128,29 @@ Y_train = np_utils.to_categorical(y_train, len(labels_amount))
 Y_test  = np_utils.to_categorical(y_test, len(labels_amount))
 
 #Model
-print('Creating model ...')
-model  = Sequential()
-model.add(Conv2D(number_of_filters, (number_of_convolution,
-                        number_of_convolution), activation=activation_function,
-                        input_shape=(image_depth,image_height,image_width)))
+def create_model():
+    print('Creating model ...')
+    model  = Sequential()
+    model.add(Conv2D(number_of_filters, (number_of_convolution,
+                            number_of_convolution), activation=activation_function,
+                            input_shape=(image_depth,image_height,image_width)))
 
-model.add(Conv2D(number_of_filters, (number_of_convolution, number_of_convolution), activation=activation_function))
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Dropout(0.25))
+    model.add(Conv2D(number_of_filters, (number_of_convolution, number_of_convolution), activation=activation_function))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.25))
 
-model.add(Flatten())
-model.add(Dense(128, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(output_nodes, activation='softmax'))
-print('Compiling Model ...')
-model.compile(loss='categorical_crossentropy',
-              optimizer='adam',
-              metrics=['accuracy'])
-print('Training Model ...')
-model.fit(X_train, Y_train, 
-          batch_size=batchs_size, nb_epoch=number_of_epoch, verbose=1, validation_data=(X_test, Y_test))
+    model.add(Flatten())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(output_nodes, activation='softmax'))
+
+def compile_model():
+    print('Compiling Model ...')
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+def train():
+    print('Training Model ...')
+    model.fit(X_train, Y_train, 
+              batch_size=batchs_size, nb_epoch=number_of_epoch, verbose=1, validation_data=(X_test, Y_test))
