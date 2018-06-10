@@ -3,6 +3,8 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.optimizers import SGD, RMSprop, adam
 from keras.utils import np_utils
+from keras.models import load_model
+import keras
 
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
@@ -86,21 +88,27 @@ def normalizeValues(X_train, X_test, value):
 #Config
 input_path  = './input_data'
 output_path = './output_data'
+model_name  = 'trained_model.h5'
 
+if not os.path.exists(input_path):
+    os.makedirs(input_path)
+if not os.path.exists(output_path):
+    os.makedirs(input_path)
+    
 image_height = 28
 image_width  = 28
-labels_amount = [300,# 300 samples of 0 class
-                 300,# 300 samples of 1 class
-                 300,# 300 samples of 2 class
-                 300,# 300 samples of 3 class
-                 300,# 300 samples of 4 class
-                 300,# 300 samples of 5 class
-                 300,# 300 samples of 6 class
-                 300,# 300 samples of 7 class
-                 300,# 300 samples of 8 class
-                 300,# 300 samples of 9 class
-                 300,# 300 samples of + class
-                 300]# 300 samples of - class
+labels_amount = [3,# 300 samples of 0 class
+                 3,# 300 samples of 1 class
+                 3,# 300 samples of 2 class
+                 3,# 300 samples of 3 class
+                 3,# 300 samples of 4 class
+                 3,# 300 samples of 5 class
+                 3,# 300 samples of 6 class
+                 3,# 300 samples of 7 class
+                 3,# 300 samples of 8 class
+                 3,# 300 samples of 9 class
+                 3,# 300 samples of + class
+                 3]# 300 samples of - class
 
 batchs_size = 10
 number_of_classes = 12
@@ -155,14 +163,20 @@ def compile_model(model):
 
 def train(model):
     print('Training Model ...')
+    save_epoch = keras.callbacks.ModelCheckpoint('model_checkpoint.hdf5', monitor='val_loss', verbose=0, save_best_only=False, save_weights_only=False, mode='auto', period=1)
     model.fit(X_train, Y_train, 
-              batch_size=batchs_size, epochs=number_of_epoch, verbose=1, validation_data=(X_test, Y_test))
+              batch_size=batchs_size, epochs=number_of_epoch, verbose=1, validation_data=(X_test, Y_test), callbacks=[save_epoch])
     return model
 
 def start():
-    model = create_model()
+    if os.path.isfile(model_name):
+        print('Existing model detected. Loading data ...')
+        model = load_model(model_name)
+    else:
+        print('No model detected. Creating model ...')
+        model = create_model()
     compiled_model = compile_model(model)
-    trained_model  = train(compiled_model) 
-    trained_model.save('trained_model.h5')
+    trained_model= train(compiled_model)
+    trained_model.save(model_name)
 
 start()
