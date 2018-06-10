@@ -69,9 +69,9 @@ Keras has __tensorflow__ as default, we need to change it to __theano__. You can
 	    "image_data_format": "channels_last"
 	 }
 ## References
-[Anuj shah](https://www.youtube.com/watch?v=2pQOXjpO_u0
+[Anuj shah](https://www.youtube.com/watch?v=2pQOXjpO_u0)
 
-[Elite Data Science](https://elitedatascience.com/keras-tutorial-deep-learning-in-python
+[Elite Data Science](https://elitedatascience.com/keras-tutorial-deep-learning-in-python)
 
 [Keras](keras.io/)
 
