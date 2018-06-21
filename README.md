@@ -1,3 +1,4 @@
+
 # 🔨 Work in progress 🔨
 ![alt text](https://s3.amazonaws.com/keras.io/img/keras-logo-2018-large-1200.png)
 
@@ -58,9 +59,66 @@ In this example we're going to make an extended version of the MNIST.
 ### Evaluate model on test data
 ## Documentation
 
+**prepareData** ( *input_path*, *output_path*, *output_image_height*, *output_image_width*, *labels_amount_array* ) **→ returns data, labels**
+
+`Resizes dataset to a given heigth*width, convert in to grayscale, saves them in to a given folder ...`
+
+input_path : *path to input dataset*.
+
+output_path: *path to output dataset (modified data)*.
+
+output_image_height: *heigth of the output image to train the model*.
+
+output_image_width: *width of the output image to train the model*.
+
+labels_amount_array: *array with size equal to classes and each index contains the amount of images of that class to trian the model **(images and labels must be in order)***.
+
+**resizeImage** ( *height*, *width*, *image* ) **→ returns image**
+
+`resize an image to a given heigth*width`
+
+height : *height of the output image*.
+
+width: *width of the output image*.
+
+image : *image to convert*.
+
+**convertToGrayscale** ( image ) **→ returns image**
+
+`converts an image in to grayscale`
+
+image : *image to convert*.
+
+**getImages** ( path ) **→ returns images in path**
+
+`returns all images in a given path`
+
+path : *path to a folder with images*.
+
+**imagesToArray** ( path ) **→ returns matrix**
+
+`Converts multiple images into a matrix`
+
+**imageToArray** ( image ) **→ returns array**
+
+`Converts the image into an array and applies a flatten function to the array`
+
+**createLabels** ( labels_amount_array ) **→ returns array**
+
+`Creates an array of labels to assign to your data`
+
+**previewImage** ( images_as_array ) **→ returns None**
+
+`Displays the image with matplotlib`
+
+
+**declareDimensionDepth** ( X_train, X_test ) 
+
+**convertDataType** ( X_train, X_test )
+
+**normalizeValues** ( X_train, X_test, value )
 
 ## Posible errors
-
 
 `ModuleNotFoundError: No module named 'tensorflow'`
 
