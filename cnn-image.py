@@ -4,6 +4,9 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras.optimizers import SGD, RMSprop, adam
 from keras.utils import np_utils
 from keras.models import load_model
+
+from keras.preprocessing.image import ImageDataGenerator
+
 import keras
 
 from sklearn.utils import shuffle
@@ -13,7 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 import os
-import theano
+import tensorflow
 from PIL import Image
 from numpy import *
 
@@ -24,7 +27,7 @@ be.set_image_dim_ordering('th')
 
 #Methods
 def prepareData(input_path, output_path, output_image_height, output_image_width,
-                   labels_ammount_array):
+                   labels_amount_array):
     input_images = getImages(input_path)
     for file in input_images:
         image = input_path + '\\' + file
@@ -32,7 +35,7 @@ def prepareData(input_path, output_path, output_image_height, output_image_width
         grayscaled_image = convertToGrayscale(resized_image)
         grayscaled_image.save(output_path + '\\' + file, 'JPEG')
     images_as_array = imagesToArray(output_path)  
-    labels = createLabels(labels_ammount_array)
+    labels = createLabels(labels_amount_array)
     data, labels = shuffle(images_as_array, labels, random_state=2)
     return data, labels
         
@@ -50,9 +53,14 @@ def imagesToArray(path):
     input_images = getImages(path)
     image_matrix = []
     for image in input_images:
-        image_as_array = array(Image.open(path + '\\' + image)).flatten()
+        open_image = Image.open(path + '\\' + image)
+        image_as_array = imageToArray(open_image)
         image_matrix.append(image_as_array)
     return array(image_matrix, 'f')
+
+def imageToArray(image):
+    return array(image).flatten()
+    
 
 #You can edit this method to use custom labels
 def createLabels(labels_amount_array):
@@ -97,18 +105,18 @@ if not os.path.exists(output_path):
     
 image_height = 28
 image_width  = 28
-labels_amount = [3,# 300 samples of 0 class
-                 3,# 300 samples of 1 class
-                 3,# 300 samples of 2 class
-                 3,# 300 samples of 3 class
-                 3,# 300 samples of 4 class
-                 3,# 300 samples of 5 class
-                 3,# 300 samples of 6 class
-                 3,# 300 samples of 7 class
-                 3,# 300 samples of 8 class
-                 3,# 300 samples of 9 class
-                 3,# 300 samples of + class
-                 3]# 300 samples of - class
+labels_amount = [100,# 300 samples of 0 class
+                 100,# 300 samples of 1 class
+                 100,# 300 samples of 2 class
+                 100,# 300 samples of 3 class
+                 100,# 300 samples of 4 class
+                 100,# 300 samples of 5 class
+                 100,# 300 samples of 6 class
+                 100,# 300 samples of 7 class
+                 100,# 300 samples of 8 class
+                 100,# 300 samples of 9 class
+                 100,# 300 samples of + class
+                 100]# 300 samples of - class
 
 batchs_size = 10
 number_of_classes = 12
@@ -163,12 +171,24 @@ def compile_model(model):
 
 def train(model):
     print('Training Model ...')
-    save_epoch = keras.callbacks.ModelCheckpoint('model_checkpoint.hdf5', monitor='val_loss', verbose=0, save_best_only=False, save_weights_only=False, mode='auto', period=1)
+    save_epoch = keras.callbacks.ModelCheckpoint('model_checkpoint.hdf5',
+                                                 monitor='val_loss',
+                                                 verbose=0,
+                                                 save_best_only=False,
+                                                 save_weights_only=False,
+                                                 mode='auto',
+                                                 period=100)
     model.fit(X_train, Y_train, 
-              batch_size=batchs_size, epochs=number_of_epoch, verbose=1, validation_data=(X_test, Y_test), callbacks=[save_epoch])
+              batch_size=batchs_size,
+              epochs=number_of_epoch,
+              verbose=1,
+              validation_data=(X_test, Y_test),
+              callbacks=[save_epoch])
+    
     return model
 
 def start():
+    model_name = 'model_checkpoint.hdf5' #Path
     if os.path.isfile(model_name):
         print('Existing model detected. Loading data ...')
         model = load_model(model_name)
@@ -178,5 +198,17 @@ def start():
     compiled_model = compile_model(model)
     trained_model= train(compiled_model)
     trained_model.save(model_name)
+
+def predict(image_path):
+    if os.path.isfile(model_name):
+        print('Existing model detected. Loading data ...')
+        model = load_model(model_name)
+    else:
+        print('No model detected. Create and train a new model')
+        return
+    image_generator = ImageDataGenerator().flow_from_directory(image_path, class_mode=None, target_size=(image_height, image_width), seed=10)
+    print(image_generator)
+    prediction = model.predict(image_generator)    
+    print(prediction)
 
 start()
