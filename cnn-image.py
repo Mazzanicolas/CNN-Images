@@ -105,18 +105,18 @@ if not os.path.exists(output_path):
     
 image_height = 28
 image_width  = 28
-labels_amount = [100,# 300 samples of 0 class
-                 100,# 300 samples of 1 class
-                 100,# 300 samples of 2 class
-                 100,# 300 samples of 3 class
-                 100,# 300 samples of 4 class
-                 100,# 300 samples of 5 class
-                 100,# 300 samples of 6 class
-                 100,# 300 samples of 7 class
-                 100,# 300 samples of 8 class
-                 100,# 300 samples of 9 class
-                 100,# 300 samples of + class
-                 100]# 300 samples of - class
+labels_amount = [300,# 300 samples of 0 class
+                 300,# 300 samples of 1 class
+                 300,# 300 samples of 2 class
+                 300,# 300 samples of 3 class
+                 300,# 300 samples of 4 class
+                 300,# 300 samples of 5 class
+                 300,# 300 samples of 6 class
+                 300,# 300 samples of 7 class
+                 300,# 300 samples of 8 class
+                 300,# 300 samples of 9 class
+                 300,# 300 samples of + class
+                 300]# 300 samples of - class
 
 batchs_size = 10
 number_of_classes = 12
